@@ -2,12 +2,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ============================================================
  * ABSTRACT CLASS - Room
- * ============================================================
- * Represents a generic hotel room.
  */
-
 abstract class Room {
 
     protected int numberOfBeds;
@@ -28,7 +24,7 @@ abstract class Room {
 }
 
 /**
- * Single Room class
+ * Single Room
  */
 class SingleRoom extends Room {
     public SingleRoom() {
@@ -37,7 +33,7 @@ class SingleRoom extends Room {
 }
 
 /**
- * Double Room class
+ * Double Room
  */
 class DoubleRoom extends Room {
     public DoubleRoom() {
@@ -46,7 +42,7 @@ class DoubleRoom extends Room {
 }
 
 /**
- * Suite Room class
+ * Suite Room
  */
 class SuiteRoom extends Room {
     public SuiteRoom() {
@@ -55,12 +51,9 @@ class SuiteRoom extends Room {
 }
 
 /**
- * ============================================================
  * CLASS - RoomInventory
- * ============================================================
- * Centralized inventory using HashMap
+ * Stores centralized availability
  */
-
 class RoomInventory {
 
     private Map<String, Integer> roomAvailability;
@@ -86,12 +79,47 @@ class RoomInventory {
 }
 
 /**
- * ============================================================
- * MAIN CLASS - BookMyStay
- * ============================================================
- * Demonstrates centralized inventory management.
+ * CLASS - RoomSearchService
+ * Performs read-only search
  */
+class RoomSearchService {
 
+    public void searchAvailableRooms(
+            RoomInventory inventory,
+            Room singleRoom,
+            Room doubleRoom,
+            Room suiteRoom) {
+
+        Map<String, Integer> availability = inventory.getRoomAvailability();
+
+        System.out.println("Room Search Results\n");
+
+        if (availability.get("Single") > 0) {
+            System.out.println("Single Room:");
+            singleRoom.displayRoomDetails();
+            System.out.println("Available: " + availability.get("Single"));
+            System.out.println();
+        }
+
+        if (availability.get("Double") > 0) {
+            System.out.println("Double Room:");
+            doubleRoom.displayRoomDetails();
+            System.out.println("Available: " + availability.get("Double"));
+            System.out.println();
+        }
+
+        if (availability.get("Suite") > 0) {
+            System.out.println("Suite Room:");
+            suiteRoom.displayRoomDetails();
+            System.out.println("Available: " + availability.get("Suite"));
+        }
+    }
+}
+
+/**
+ * MAIN CLASS - BookMyStay
+ * Demonstrates room search with read-only access
+ */
 public class BookMyStay {
 
     public static void main(String[] args) {
@@ -102,25 +130,13 @@ public class BookMyStay {
         Room doubleRoom = new DoubleRoom();
         Room suiteRoom = new SuiteRoom();
 
-        System.out.println("Hotel Room Inventory Status\n");
+        RoomSearchService searchService = new RoomSearchService();
 
-        System.out.println("Single Room:");
-        singleRoom.displayRoomDetails();
-        System.out.println("Available Rooms: "
-                + inventory.getRoomAvailability().get("Single"));
-
-        System.out.println();
-
-        System.out.println("Double Room:");
-        doubleRoom.displayRoomDetails();
-        System.out.println("Available Rooms: "
-                + inventory.getRoomAvailability().get("Double"));
-
-        System.out.println();
-
-        System.out.println("Suite Room:");
-        suiteRoom.displayRoomDetails();
-        System.out.println("Available Rooms: "
-                + inventory.getRoomAvailability().get("Suite"));
+        searchService.searchAvailableRooms(
+                inventory,
+                singleRoom,
+                doubleRoom,
+                suiteRoom
+        );
     }
 }
