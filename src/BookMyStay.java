@@ -23,7 +23,6 @@ class Reservation {
     }
 }
 
-
 /**
  * CLASS - BookingRequestQueue
  * Stores booking requests in FIFO order
